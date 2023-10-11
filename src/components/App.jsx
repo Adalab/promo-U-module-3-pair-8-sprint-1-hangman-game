@@ -5,6 +5,8 @@ import '../styles/App.scss';
 function App() {
   const [numberOfErrors, setNumberOfErrors] = useState(0);
   const [lastLetter, setLastLetter] = useState('');
+  const [word, setWord] = useState('katakroker');
+  const [userLetters, setUserLetters] = useState([]);
 
   const handleClick = () => {
     setNumberOfErrors(numberOfErrors + 1);
@@ -12,14 +14,26 @@ function App() {
 
   const handleLastLetter = (ev) => {
     const value = ev.target.value;
-    const patron = /^[A-Za-z]+$/;
+    const patron =
+      /^[ A-Za-zäÄëËïÏöÖüÜáéíóúáéíóúÁÉÍÓÚÂÊÎÔÛâêîôûàèìòùÀÈÌÒÙñÑ.-]+$/;
 
-    if (patron.test(value)) {
+    if (patron.test(value) || value === '') {
       setLastLetter(value);
+      if (value !== '') {
+        setUserLetters([...userLetters, value]);
+      }
+      console.log(userLetters);
       console.log('letra válida');
     } else {
       console.log('caracter no válido');
     }
+  };
+
+  const renderSolutionLetters = () => {
+    const wordLetters = word.split('');
+    return wordLetters.map((wordLetter, index) => {
+      return <li className="letter" key={index}></li>;
+    });
   };
 
   //valido: tildes y dieresis
@@ -35,18 +49,7 @@ function App() {
           <section>
             <div className="solution">
               <h2 className="title">Solución:</h2>
-              <ul className="letters">
-                <li className="letter">k</li>
-                <li className="letter">a</li>
-                <li className="letter"></li>
-                <li className="letter">a</li>
-                <li className="letter">k</li>
-                <li className="letter">r</li>
-                <li className="letter"></li>
-                <li className="letter">k</li>
-                <li className="letter">e</li>
-                <li className="letter">r</li>
-              </ul>
+              <ul className="letters">{renderSolutionLetters()}</ul>
             </div>
             <div className="error">
               <h2 className="title">Letras falladas:</h2>
