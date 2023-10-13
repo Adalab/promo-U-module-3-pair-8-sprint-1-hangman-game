@@ -32,12 +32,27 @@ function App() {
   const renderSolutionLetters = () => {
     const wordLetters = word.split('');
     return wordLetters.map((wordLetter, index) => {
-      return <li className="letter" key={index}></li>;
+      return userLetters.includes(wordLetter) ? (
+        <li key={index} className="letter">
+          {wordLetter}
+        </li>
+      ) : (
+        <li key={index} className="letter"></li>
+      );
     });
   };
 
-  //valido: tildes y dieresis
-  //no válidos: números, espacios, signos gramaticales (!?)
+  const renderErrorLetters = () => {
+    let failedLetters = userLetters.filter((userLetter) => {
+      return word.includes(userLetter) === false;
+    });
+    console.log(userLetters);
+    return failedLetters.map((failedLetter, index) => (
+      <li key={index} className="letter">
+        {failedLetter}
+      </li>
+    ));
+  };
 
   return (
     <>
@@ -53,13 +68,7 @@ function App() {
             </div>
             <div className="error">
               <h2 className="title">Letras falladas:</h2>
-              <ul className="letters">
-                <li className="letter">f</li>
-                <li className="letter">q</li>
-                <li className="letter">h</li>
-                <li className="letter">p</li>
-                <li className="letter">x</li>
-              </ul>
+              <ul className="letters">{renderErrorLetters()}</ul>
             </div>
             <form className="form">
               <label className="title" htmlFor="last-letter">
